@@ -24,6 +24,12 @@ Breast Cancer Wisconsin Dataset (URL)
 
 ## Estrutura
 - data/: dados
+- notebooks/: análises
 
 ## Etapas atuais
 - Carregamento de dados implementado
+- Análise exploratória (EDA)
+
+## Insights iniciais
+- Dataset sem valores nulos
+- Classes levemente desbalanceadas
