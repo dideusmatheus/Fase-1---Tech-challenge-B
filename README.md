@@ -25,6 +25,8 @@ Breast Cancer Wisconsin Dataset (URL)
 ## Estrutura
 - data/: dados
 - notebooks/: análises
+- src/: código
+- models/: modelos treinados
 
 ## Etapas atuais
 - Carregamento de dados implementado
@@ -32,7 +34,12 @@ Breast Cancer Wisconsin Dataset (URL)
 - Pré-processamento implementado
   - Remoção de ID
   - Encoding da variável alvo
+- Treinando o modelo
 
 ## Insights iniciais
 - Dataset sem valores nulos
 - Classes levemente desbalanceadas
+
+## Modelos implementados
+- Logistic Regression
+- Random Forest
