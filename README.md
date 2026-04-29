@@ -43,3 +43,11 @@ Breast Cancer Wisconsin Dataset (URL)
 ## Modelos implementados
 - Logistic Regression
 - Random Forest
+
+## Avaliação
+- Accuracy
+- Precision
+- Recall
+- F1-score
+
+Foco em recall para minimizar falsos negativos.
