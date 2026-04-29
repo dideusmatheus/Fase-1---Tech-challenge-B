@@ -18,3 +18,12 @@ automaticamente, destacando informações relevantes para o diagnóstico.
 Construir uma solução inicial com foco em IA para processamento de 
 exames médicos e documentos clínicos, aplicando fundamentos essenciais de 
 IA, Machine Learning e Visão Computacional. 
+
+## Dataset
+Breast Cancer Wisconsin Dataset (URL)
+
+## Estrutura
+- data/: dados
+
+## Etapas atuais
+- Carregamento de dados implementado
