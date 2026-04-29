@@ -29,6 +29,9 @@ Breast Cancer Wisconsin Dataset (URL)
 ## Etapas atuais
 - Carregamento de dados implementado
 - Análise exploratória (EDA)
+- Pré-processamento implementado
+  - Remoção de ID
+  - Encoding da variável alvo
 
 ## Insights iniciais
 - Dataset sem valores nulos
