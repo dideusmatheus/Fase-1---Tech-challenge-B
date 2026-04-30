@@ -20,13 +20,14 @@ exames médicos e documentos clínicos, aplicando fundamentos essenciais de
 IA, Machine Learning e Visão Computacional. 
 
 ## Dataset
-Breast Cancer Wisconsin Dataset (URL)
+Breast Cancer Wisconsin Dataset localizado em data/raw/ ou no [Link](https://www.kaggle.com/datasets/uciml/breast-cancer-wisconsin-data/data)
 
 ## Estrutura
 - data/: dados
 - notebooks/: análises
 - src/: código
-- models/: modelos treinados
+- src/models/: modelos treinados
+- src/pipeline: pipeline
 
 ## Etapas atuais
 - Carregamento de dados implementado
@@ -34,7 +35,10 @@ Breast Cancer Wisconsin Dataset (URL)
 - Pré-processamento implementado
   - Remoção de ID
   - Encoding da variável alvo
+  - Remover linhas duplicadas
 - Treinando o modelo
+- Validação do modelo
+- Testar o modelo
 
 ## Insights iniciais
 - Dataset sem valores nulos
@@ -60,4 +64,4 @@ Foco em recall para minimizar falsos negativos.
 
 ## Pipeline
 Pipeline completo implementado:
-- Load → Preprocess → Train → Evaluate
+- Load → Pré-processamento → Treinamento → Validação → Teste Final

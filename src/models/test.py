@@ -5,8 +5,7 @@ from sklearn.metrics import (
     accuracy_score,
     classification_report,
     confusion_matrix,
-    roc_auc_score,
-    ConfusionMatrixDisplay
+    roc_auc_score
 )
 
 def run_test(best_model, best_name, X_test, y_test):

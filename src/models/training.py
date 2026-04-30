@@ -79,7 +79,7 @@ def run_training(X_train, X_val, y_train, y_val):
         print(f"✅ Concluído | F1 Score Validação: {f1:.4f}")
 
         # Salva o modelo treinado em disco (.pkl)
-        # joblib.dump(model, f"src/models/model/{name}.pkl")
+        joblib.dump(model, f"src/models/model/{name}.pkl")
 
         # Armazena o modelo no dicionário de retorno
         trained[name] = model
