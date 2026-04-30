@@ -21,7 +21,7 @@ if __name__ == "__main__":
     df = load_data(path)
 
     # Mostra as primeiras linhas
-    print(df.head())
+    print('Mostra as primeiras linhas: ',df.head())
 
     # Mostra informações gerais
     print(df.info())
