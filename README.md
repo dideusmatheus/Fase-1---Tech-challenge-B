@@ -43,6 +43,12 @@ Breast Cancer Wisconsin Dataset (URL)
 ## Modelos implementados
 - Logistic Regression
 - Random Forest
+- Decision Tree
+- KNN
+- SVM
+- Gradient Boosting
+- Extra Trees
+- MLP
 
 ## Avaliação
 - Accuracy
@@ -51,3 +57,7 @@ Breast Cancer Wisconsin Dataset (URL)
 - F1-score
 
 Foco em recall para minimizar falsos negativos.
+
+## Pipeline
+Pipeline completo implementado:
+- Load → Preprocess → Train → Evaluate
