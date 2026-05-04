@@ -15,12 +15,12 @@ def run_training(X_train, X_val, y_train, y_val):
     - Recebe os splits de treino e validação já prontos
     - Treina cada modelo com X_train / y_train
     - Avalia accuracy em X_val para monitorar overfitting
-    - Salva cada modelo em src/models/model/
+    - Salva cada modelo em src/machine_learning/models/
     - Retorna dicionário {nome: modelo_treinado}
     """
 
     # Cria pasta para salvar os modelos treinados
-    os.makedirs("src/models/model", exist_ok=True)
+    os.makedirs("src/machine_learning/models/model", exist_ok=True)
 
     # ── DEFINIÇÃO DOS MODELOS ─────────────────────────────────
 
@@ -79,13 +79,13 @@ def run_training(X_train, X_val, y_train, y_val):
         print(f"✅ Concluído | F1 Score Validação: {f1:.4f}")
 
         # Salva o modelo treinado em disco (.pkl)
-        joblib.dump(model, f"src/models/model/{name}.pkl")
+        joblib.dump(model, f"src/machine_learning/models/model/{name}.pkl")
 
         # Armazena o modelo no dicionário de retorno
         trained[name] = model
 
     print("\n" + "="*55)
-    print(f"💾 {len(trained)} modelos salvos em src/models/model/")
+    print(f"💾 {len(trained)} modelos salvos em src/machine_learning/models/model/")
     print("="*55)
 
     # Retorna todos os modelos treinados
@@ -97,10 +97,10 @@ if __name__ == "__main__":
     print("📂 Carregando splits de data/processed/...")
 
     # Carrega features e targets de treino e validação
-    X_train = pd.read_csv("data/processed/X_train.csv")
-    X_val   = pd.read_csv("data/processed/X_val.csv")
-    y_train = pd.read_csv("data/processed/y_train.csv").squeeze()
-    y_val   = pd.read_csv("data/processed/y_val.csv").squeeze()
+    X_train = pd.read_csv("data/machine_learning/processed/X_train.csv")
+    X_val   = pd.read_csv("data/machine_learning/processed/X_val.csv")
+    y_train = pd.read_csv("data/machine_learning/processed/y_train.csv").squeeze()
+    y_val   = pd.read_csv("data/machine_learning/processed/y_val.csv").squeeze()
 
     # Executa o treinamento
     run_training(X_train, X_val, y_train, y_val)

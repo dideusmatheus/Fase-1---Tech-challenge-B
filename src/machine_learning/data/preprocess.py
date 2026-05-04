@@ -11,12 +11,12 @@ def preprocess_data(df):
     - Encoding do target
     - Split treino/validação/teste
     - Escalonamento
-    - Salvamento dos splits em data/processed/
+    - Salvamento dos splits em data/machine_learning/processed
     """
 
     # Cria pasta de saída para os splits processados
-    os.makedirs("data/processed", exist_ok=True)
-    os.makedirs("src/models", exist_ok=True)
+    os.makedirs("data/machine_learning/processed", exist_ok=True)
+    os.makedirs("src/machine_learning/models", exist_ok=True)
 
     # ── LIMPEZA ────────────────────────────────────────────────
 
@@ -93,23 +93,23 @@ def preprocess_data(df):
     )
 
     # Salva o scaler para uso futuro em produção
-    joblib.dump(scaler, "src/models/scaler.pkl")
+    joblib.dump(scaler, "src/machine_learning/models/scaler.pkl")
 
     # ── SALVAMENTO DOS SPLITS ─────────────────────────────────
 
     # Salva features escalonadas de cada split
-    X_train_scaled.to_csv("data/processed/X_train.csv", index=False)
-    X_val_scaled.to_csv(  "data/processed/X_val.csv",   index=False)
-    X_test_scaled.to_csv( "data/processed/X_test.csv",  index=False)
+    X_train_scaled.to_csv("data/machine_learning/processed/X_train.csv", index=False)
+    X_val_scaled.to_csv(  "data/machine_learning/processed/X_val.csv",   index=False)
+    X_test_scaled.to_csv( "data/machine_learning/processed/X_test.csv",  index=False)
 
     # Salva targets de cada split (reset_index para índice limpo)
-    y_train.reset_index(drop=True).to_csv("data/processed/y_train.csv", index=False)
-    y_val.reset_index(drop=True).to_csv(  "data/processed/y_val.csv",   index=False)
-    y_test.reset_index(drop=True).to_csv( "data/processed/y_test.csv",  index=False)
+    y_train.reset_index(drop=True).to_csv("data/machine_learning/processed/y_train.csv", index=False)
+    y_val.reset_index(drop=True).to_csv(  "data/machine_learning/processed/y_val.csv",   index=False)
+    y_test.reset_index(drop=True).to_csv( "data/machine_learning/processed/y_test.csv",  index=False)
 
     # Exibe resumo da divisão
     total = len(df)
-    print("✅ Pré-processamento concluído. Splits salvos em data/processed/")
+    print("✅ Pré-processamento concluído. Splits salvos em data/machine_learning/processed/")
     print(f"   Treino    : {len(X_train_scaled):>4} amostras ({len(X_train_scaled)/total*100:.0f}%)")
     print(f"   Validação : {len(X_val_scaled):>4} amostras ({len(X_val_scaled)/total*100:.0f}%)")
     print(f"   Teste     : {len(X_test_scaled):>4} amostras ({len(X_test_scaled)/total*100:.0f}%)")

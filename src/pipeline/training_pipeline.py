@@ -1,8 +1,8 @@
-from data.load_data import load_data
-from data.preprocess import preprocess_data
-from src.models.training import run_training
-from src.models.validation import run_validation
-from src.models.test import run_test
+from src.machine_learning.data.load_data import load_data
+from src.machine_learning.data.preprocess import preprocess_data
+from src.machine_learning.training import run_training
+from src.machine_learning.validation import run_validation
+from src.machine_learning.test import run_test
 
 def run_pipeline():
     """
@@ -18,11 +18,11 @@ def run_pipeline():
 
     # ── ETAPA 1: CARGA DOS DADOS ──────────────────────────────
     print("📂 Carregando dados brutos...")
-    df = load_data("data/raw/data.csv")
+    df = load_data("data/machine_learning/raw/data.csv")
 
     # ── ETAPA 2: PRÉ-PROCESSAMENTO ────────────────────────────
     # Retorna os 6 splits prontos e já escalonados
-    # Também salva arquivos em data/processed/
+    # Também salva arquivos em data/machine_learning/processed/
     X_train, X_val, X_test, y_train, y_val, y_test = preprocess_data(df)
 
     # ── ETAPA 3: TREINAMENTO ──────────────────────────────────

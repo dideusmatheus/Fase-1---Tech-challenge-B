@@ -110,12 +110,12 @@ if __name__ == "__main__":
     print("📂 Carregando dados de teste e melhor modelo...")
 
     # Carrega dados de teste
-    X_test = pd.read_csv("data/processed/X_test.csv")
-    y_test = pd.read_csv("data/processed/y_test.csv").squeeze()
+    X_test = pd.read_csv("data/machine_learning/processed/X_test.csv")
+    y_test = pd.read_csv("data/machine_learning/processed/y_test.csv").squeeze()
 
     # Carrega todos os modelos e seleciona o melhor manualmente
     # (em produção, este nome viria do resultado de validation.py)
-    model_dir = "src/models/model"
+    model_dir = "src/machine_learning/models/model"
     trained_models = {}
 
     for filename in os.listdir(model_dir):

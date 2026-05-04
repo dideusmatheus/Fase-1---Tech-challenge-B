@@ -94,12 +94,12 @@ if __name__ == "__main__":
     print("📂 Carregando splits e modelos salvos...")
 
     # Carrega dados de validação
-    X_val = pd.read_csv("data/processed/X_val.csv")
-    y_val = pd.read_csv("data/processed/y_val.csv").squeeze()
+    X_val = pd.read_csv("data/machine_learning/processed/X_val.csv")
+    y_val = pd.read_csv("data/machine_learning/processed/y_val.csv").squeeze()
 
-    # Carrega todos os modelos salvos em src/models/model/
+    # Carrega todos os modelos salvos em src/machine_learning/models/model/
     trained_models = {}
-    model_dir = "src/models/model"
+    model_dir = "src/machine_learning/models/model"
 
     for filename in os.listdir(model_dir):
         if filename.endswith(".pkl"):

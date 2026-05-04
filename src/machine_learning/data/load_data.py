@@ -15,7 +15,7 @@ def load_data(path):
 
 if __name__ == "__main__":
     # Caminho do dataset
-    path = "data/raw/data.csv"
+    path = "data/machine_learning/raw/data.csv"
 
     # Carrega os dados
     df = load_data(path)
