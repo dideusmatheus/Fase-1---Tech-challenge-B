@@ -20,6 +20,9 @@ def preprocess_data(df):
 
     # ── LIMPEZA ────────────────────────────────────────────────
 
+    # Preserva IDs antes de remover (para rastreio pós-predição)
+    ids = df["id"].copy() if "id" in df.columns else None
+
     # Remove coluna 'id' — não tem valor preditivo
     df = df.drop(columns=["id"], errors="ignore")
 
@@ -63,7 +66,7 @@ def preprocess_data(df):
     # Resultado final: 64% treino | 16% validação | 20% teste
     X_train, X_val, y_train, y_val = train_test_split(
         X_temp, y_temp,
-        test_size=0.2,
+        test_size=0.2, # MOSTRAR PARA GALERA, 0.25 -> 2 FALSOS NEGATIVOS, 0.2 -> 1 FALSO NEGATIVO 
         random_state=42,
         stratify=y_temp
     )
@@ -113,6 +116,10 @@ def preprocess_data(df):
     print(f"   Treino    : {len(X_train_scaled):>4} amostras ({len(X_train_scaled)/total*100:.0f}%)")
     print(f"   Validação : {len(X_val_scaled):>4} amostras ({len(X_val_scaled)/total*100:.0f}%)")
     print(f"   Teste     : {len(X_test_scaled):>4} amostras ({len(X_test_scaled)/total*100:.0f}%)")
+
+    # Salva os IDs originais do conjunto de teste para rastreio de predições
+    if ids is not None:
+        ids.loc[X_test.index].reset_index(drop=True).to_csv("data/processed/id_test.csv", index=False)
 
     # Retorna os seis splits para uso direto no pipeline
     return X_train_scaled, X_val_scaled, X_test_scaled, y_train, y_val, y_test

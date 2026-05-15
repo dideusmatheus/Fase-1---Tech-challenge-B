@@ -74,6 +74,17 @@ def run_test(best_model, best_name, X_test, y_test):
     print(f"  Falsos Negativos     (FN) : {fn}  → ⚠️ Malignos classificados como Benignos")
     print(f"  Verdadeiros Positivos(TP) : {tp}  → Malignos corretamente identificados")
 
+    # ── IDENTIFICAÇÃO DOS FALSOS NEGATIVOS ────────────────────
+    fn_indices = [i for i, (yt, yp) in enumerate(zip(y_test, y_pred)) if yt == 1 and yp == 0]
+    if fn_indices:
+        id_path = "data/processed/id_test.csv"
+        if os.path.exists(id_path):
+            id_test = pd.read_csv(id_path).squeeze()
+            fn_ids = [id_test.iloc[i] for i in fn_indices]
+            print("\n  ⚠️  Paciente(s) com falso negativo (ID original):")
+            for pid in fn_ids:
+                print(f"     → ID: {pid}")
+
     # ── CONCLUSÃO ─────────────────────────────────────────────
 
     # Extrai recall de maligno para a conclusão

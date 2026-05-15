@@ -61,22 +61,33 @@ def run_training(X_train, X_val, y_train, y_val):
         # Treina o modelo APENAS com dados de treino
         model.fit(X_train, y_train)
 
-        # Avalia accuracy no conjunto de VALIDAÇÃO
+        # Avalia métricas no conjunto de VALIDAÇÃO
         # (serve para comparar modelos e detectar overfitting)
-        val_acc = accuracy_score(y_val, model.predict(X_val))
-        print(f"✅ Concluído | Accuracy Validação: {val_acc:.4f}")
+        y_pred_val = model.predict(X_val)
 
-        # Avaliar a precição
-        precision = precision_score(y_val, model.predict(X_val))
+        # Métricas de avaliação no conjunto de validação (monitoramento)
+        # O que é: percentual geral de acertos
+
+        # O que é: % de todas as predições que o modelo acertou (benignos + malignos juntos).
+        # No seu caso: Métrica enganosa. Um modelo que sempre chuta "benigno" teria ~63% de accuracy
+        # (pois ~63% do dataset é benigno), mas erraria todos os malignos. Não use como critério principal.
+        val_acc = accuracy_score(y_val, y_pred_val)
+        print(f"✅ Concluído | Accuracy Validação:  {val_acc:.4f}")
+
+        # O que é: Dos pacientes que o modelo disse "maligno", quantos % realmente eram malignos.
+        # No seu caso: Mede falsos alarmes — quantas biopsias desnecessárias o modelo gera. Secundário.
+        precision = precision_score(y_val, y_pred_val)
         print(f"✅ Concluído | Precision Validação: {precision:.4f}")
 
-        # Avaliar o recall
-        recall = recall_score(y_val, model.predict(X_val))
-        print(f"✅ Concluído | Recall Validação: {recall:.4f}")
+        # O que é: Dos pacientes que realmente têm câncer, quantos % o modelo detectou corretamente.
+        # No seu caso: MÉTRICA PRINCIPAL. Recall baixo = falsos negativos = pacientes enviados pra casa sem tratamento.
+        recall = recall_score(y_val, y_pred_val)
+        print(f"✅ Concluído | Recall Validação:    {recall:.4f}")
 
-        # Avaliar o F1 score
-        f1 = f1_score(y_val, model.predict(X_val))
-        print(f"✅ Concluído | F1 Score Validação: {f1:.4f}")
+        # O que é: Média harmônica entre Precision e Recall. Penaliza quando um dos dois é muito baixo.
+        # No seu caso: Visão balanceada, mas como você prioriza Recall, use como métrica de apoio.
+        f1 = f1_score(y_val, y_pred_val)
+        print(f"✅ Concluído | F1 Score Validação:  {f1:.4f}")
 
         # Salva o modelo treinado em disco (.pkl)
         joblib.dump(model, f"src/models/model/{name}.pkl")
