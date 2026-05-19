@@ -58,17 +58,14 @@ def run_test(best_model, best_name, X_test, y_test):
         target_names=["Benigno (B)", "Maligno (M)"]
     ))
 
-    # ── CONFUSION MATRIX ──────────────────────────────────────
+    # ── RESUMO ──────────────────────────────────────
 
     # Matriz mostra: TN | FP
     #                FN | TP
     # FN (linha Maligno, coluna Benigno) deve ser o mais baixo possível
-    cm = confusion_matrix(y_test, y_pred)
-    print("  Confusion Matrix:")
-    print(f"  {cm}")
 
     # Detalha cada quadrante para facilitar interpretação no relatório
-    tn, fp, fn, tp = cm.ravel()
+    tn, fp, fn, tp = confusion_matrix(y_test, y_pred).ravel()
     print(f"\n  Verdadeiros Negativos (TN) : {tn}  → Benignos corretamente identificados")
     print(f"  Falsos Positivos     (FP) : {fp}  → Benignos classificados como Malignos")
     print(f"  Falsos Negativos     (FN) : {fn}  → ⚠️ Malignos classificados como Benignos")
@@ -111,7 +108,7 @@ def run_test(best_model, best_name, X_test, y_test):
         "recall_maligno": recall_maligno,
         "f1_maligno":     f1_maligno,
         "falsos_negativos": fn,
-        "confusion_matrix": cm,
+        "confusion_matrix": confusion_matrix(y_test, y_pred),
     }
 
 
