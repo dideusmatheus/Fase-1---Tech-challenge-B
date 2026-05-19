@@ -24,6 +24,16 @@ def run_validation(trained_models, X_val, y_val):
     # Recall de maligno é a métrica principal: minimizar falsos negativos
     recall_scores = {}
 
+    # Dicionário para armazenar a Precision Maligno de cada modelo
+    # Usado como 2º critério de desempate quando dois modelos têm o mesmo Recall:
+    # o que tem maior Precision gera menos alarmes falsos (benignos classificados como malignos)
+    precision_scores = {}
+
+    # Dicionário para armazenar o F1 Maligno de cada modelo
+    # Usado como 3º critério de desempate quando Recall e Precision também empatam:
+    # F1 = média harmônica entre Precision e Recall — equilibra os dois ao mesmo tempo
+    f1_scores = {}
+
     for name, model in trained_models.items():
 
         print(f"\n🔹 {name.replace('_', ' ').title()}")
@@ -76,25 +86,40 @@ def run_validation(trained_models, X_val, y_val):
         recall_maligno = report["Maligno (M)"]["recall"]
         recall_scores[name] = recall_maligno
 
+        precision_maligno = report["Maligno (M)"]["precision"]  # % dos previstos malignos que realmente eram malignos
+        precision_scores[name] = precision_maligno              # guarda para 2º desempate no ranking final
+
+        f1_maligno = report["Maligno (M)"]["f1-score"]          # média harmônica entre Precision e Recall
+        f1_scores[name] = f1_maligno                            # guarda para 3º desempate no ranking final
+
     # ── COMPARATIVO FINAL ─────────────────────────────────────
 
     print("\n" + "="*55)
     print("📊 COMPARATIVO — RECALL MALIGNO (validação)")
-    print("   (quanto maior, menos falsos negativos)")
+    print("   (critério 1: Recall — critério 2: Precision — critério 3: F1)")
     print("="*55)
 
-    # Ordena modelos por recall de maligno decrescente
-    sorted_scores = sorted(recall_scores.items(), key=lambda x: x[1], reverse=True)
+    # Ordena modelos por três critérios em sequência:
+    # 1º Recall Maligno decrescente — minimizar falsos negativos é a prioridade
+    # 2º Precision Maligno decrescente — entre recalls iguais, vence quem gera menos alarmes falsos
+    # 3º F1 Maligno decrescente — entre recalls e precisions iguais, vence o melhor equilíbrio geral
+    sorted_scores = sorted(
+        recall_scores.items(),
+        key=lambda x: (x[1], precision_scores[x[0]], f1_scores[x[0]]),  # Python compara tupla elemento a elemento
+        reverse=True                                                       # decrescente nos três critérios
+    )
 
-    # Imprime o ranking.
+    # Imprime o ranking com os três critérios lado a lado
     for rank, (name, recall) in enumerate(sorted_scores, 1):
-        # Destaca o melhor modelo com emoji
+        precision = precision_scores[name]   # recupera a Precision armazenada durante o loop
+        f1 = f1_scores[name]                 # recupera o F1 armazenado durante o loop
         star = "🥇" if rank == 1 else f"  {rank}."
-        print(f"  {star} {name:<25} Recall Maligno: {recall:.4f}")
+        print(f"  {star} {name:<25} Recall: {recall:.4f}  |  Precision: {precision:.4f}  |  F1: {f1:.4f}")
 
-    # Identifica o melhor modelo (maior recall de maligno)
-    # em vez de escolher o modelo mais "preciso" ou com maior accuracy, o projeto escolhe o que menos deixa malignos escaparem, porque no diagnóstico de câncer, um falso negativo tem consequência muito mais grave do que um falso positivo.
-    best_name = sorted_scores[0][0]
+    # Identifica o melhor modelo: maior Recall Maligno, desempatado por Precision Maligno
+    # Recall Maligno é a prioridade porque falso negativo (câncer não detectado) tem
+    # consequência muito mais grave do que falso positivo (alarme falso)
+    best_name = sorted_scores[0][0]          # primeiro da lista ordenada = melhor nos dois critérios
     best_model = trained_models[best_name]
 
     print(f"\n✅ Melhor modelo na validação: {best_name}")
