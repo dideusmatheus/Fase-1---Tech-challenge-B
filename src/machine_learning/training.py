@@ -101,17 +101,3 @@ def run_training(X_train, X_val, y_train, y_val):
 
     # Retorna todos os modelos treinados
     return trained
-
-
-if __name__ == "__main__":
-    # Execução direta: carrega splits salvos e treina
-    print("📂 Carregando splits de data/processed/...")
-
-    # Carrega features e targets de treino e validação
-    X_train = pd.read_csv("data/processed/X_train.csv")
-    X_val   = pd.read_csv("data/processed/X_val.csv")
-    y_train = pd.read_csv("data/processed/y_train.csv").squeeze()
-    y_val   = pd.read_csv("data/processed/y_val.csv").squeeze()
-
-    # Executa o treinamento
-    run_training(X_train, X_val, y_train, y_val)

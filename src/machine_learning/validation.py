@@ -127,24 +127,3 @@ def run_validation(trained_models, X_val, y_val):
 
     # Retorna o nome e objeto do melhor modelo
     return best_name, best_model
-
-
-if __name__ == "__main__":
-    # Execução direta: carrega splits e modelos do disco
-    print("📂 Carregando splits e modelos salvos...")
-
-    # Carrega dados de validação
-    X_val = pd.read_csv("data/processed/X_val.csv")
-    y_val = pd.read_csv("data/processed/y_val.csv").squeeze()
-
-    # Carrega todos os modelos salvos em src/models/model/
-    trained_models = {}
-    model_dir = "src/models/model"
-
-    for filename in os.listdir(model_dir):
-        if filename.endswith(".pkl"):
-            name = filename.replace(".pkl", "")           # remove extensão
-            trained_models[name] = joblib.load(f"{model_dir}/{filename}")
-
-    # Executa validação
-    run_validation(trained_models, X_val, y_val)

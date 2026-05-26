@@ -110,30 +110,3 @@ def run_test(best_model, best_name, X_test, y_test):
         "falsos_negativos": fn,
         "confusion_matrix": confusion_matrix(y_test, y_pred),
     }
-
-
-if __name__ == "__main__":
-    # Execução direta: carrega o melhor modelo e dados de teste do disco
-
-    print("📂 Carregando dados de teste e melhor modelo...")
-
-    # Carrega dados de teste
-    X_test = pd.read_csv("data/processed/X_test.csv")
-    y_test = pd.read_csv("data/processed/y_test.csv").squeeze()
-
-    # Carrega todos os modelos e seleciona o melhor manualmente
-    # (em produção, este nome viria do resultado de validation.py)
-    model_dir = "src/models/model"
-    trained_models = {}
-
-    for filename in os.listdir(model_dir):
-        if filename.endswith(".pkl"):
-            name = filename.replace(".pkl", "")
-            trained_models[name] = joblib.load(f"{model_dir}/{filename}")
-
-    # Define qual é o melhor modelo (altere conforme resultado da validação)
-    best_name  = "random_forest"
-    best_model = trained_models[best_name]
-
-    # Executa avaliação final
-    run_test(best_model, best_name, X_test, y_test)
