@@ -15,12 +15,12 @@ def run_training(X_train, X_val, y_train, y_val):
     - Recebe os splits de treino e validação já prontos
     - Treina cada modelo com X_train / y_train
     - Avalia accuracy em X_val para monitorar overfitting
-    - Salva cada modelo em src/models/model/
+    - Salva cada modelo em models/machine_learning
     - Retorna dicionário {nome: modelo_treinado}
     """
 
     # Cria pasta para salvar os modelos treinados
-    os.makedirs("src/models/model", exist_ok=True)
+    os.makedirs("models/machine_learning", exist_ok=True)
 
     # ── DEFINIÇÃO DOS MODELOS ─────────────────────────────────
 
@@ -90,13 +90,13 @@ def run_training(X_train, X_val, y_train, y_val):
         print(f"✅ Concluído | F1 Score Validação:  {f1:.4f}")
 
         # Salva o modelo treinado em disco (.pkl)
-        joblib.dump(model, f"src/models/model/{name}.pkl")
+        joblib.dump(model, f"models/machine_learning/{name}.pkl")
 
         # Armazena o modelo no dicionário de retorno
         trained[name] = model
 
     print("\n" + "="*55)
-    print(f"💾 {len(trained)} modelos salvos em src/models/model/")
+    print(f"💾 {len(trained)} modelos salvos em models/machine_learning/")
     print("="*55)
 
     # Retorna todos os modelos treinados
