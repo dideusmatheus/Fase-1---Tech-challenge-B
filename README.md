@@ -115,4 +115,4 @@ A seleção do melhor modelo segue um sistema de ranking em três níveis:
 - F1-score (classe maligno): `0.9639`
 - Falsos negativos: `2`
 
-![Resumo final do pipeline](image.png)
+<img width="452" height="198" alt="image" src="https://github.com/user-attachments/assets/18af7ba4-6917-4556-8866-d965b9f8dd36" />
