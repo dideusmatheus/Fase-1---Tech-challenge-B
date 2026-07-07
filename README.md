@@ -70,6 +70,69 @@ O dataset utilizado é o Breast Cancer Wisconsin Dataset. Os dados brutos devem 
     - `test.py`: avaliação final no conjunto de teste
   - `pipeline/`: fluxo de treinamento e validação (`training_pipeline.py`)
 
+## Diagrama de Fluxo
+
+```mermaid
+flowchart LR
+    START([Inicio])
+
+    subgraph INGESTION ["Ingestao"]
+        LOAD["Breast Cancer Wisconsin Dataset<br/>569 amostras - 30 features numericas - Kaggle"]
+    end
+
+    subgraph PREP ["Pre-processamento"]
+        direction TB
+        CLEAN["Remover id, duplicatas<br/>e features com missing rate > 40%"]
+        ENCODE["Label Encoding: Maligno=1, Benigno=0"]
+        SPLIT["Stratified Split<br/>64% treino, 16% val, 20% teste"]
+        SCALE["StandardScaler<br/>fit no treino, transform em todos os splits"]
+        CLEAN --> ENCODE --> SPLIT --> SCALE
+    end
+
+    SAVE_DATA[("data/processed/")]
+
+    subgraph TRAINING ["Treinamento"]
+        direction TB
+        NEXT["Iterar sobre cada classificador<br/>LR, RF, DT, KNN, SVM, GB, ET, MLP"]
+        FIT["Fit em X_train"]
+        VAL_METRICS["Avaliacao em X_val<br/>Recall, Precision, F1"]
+        LOOP{"Proximo<br/>classificador?"}
+        NEXT --> FIT --> VAL_METRICS --> LOOP
+        LOOP -- Sim --> NEXT
+    end
+
+    MODELS[("models/*.pkl")]
+
+    subgraph SELECTION ["Model Selection"]
+        direction TB
+        RANK["Ranking por Recall maligno<br/>Desempate: Precision e F1"]
+        BEST["Melhor modelo: SVM"]
+        RANK --> BEST
+    end
+
+    subgraph FINAL_EVAL ["Avaliacao Final"]
+        direction TB
+        HOLDOUT["Avaliar no holdout set"]
+        FN{"Falsos negativos<br/>detectados?"}
+        TRACK["Rastrear IDs dos pacientes<br/>com falso negativo"]
+        REPORT["Accuracy 0.9737 - Recall 0.9524<br/>F1 0.9639 - Falsos Negativos: 2"]
+        HOLDOUT --> FN
+        FN -- Sim --> TRACK --> REPORT
+        FN -- Nao --> REPORT
+    end
+
+    END([Fim])
+
+    START --> LOAD
+    LOAD --> CLEAN
+    SCALE --> SAVE_DATA
+    SAVE_DATA --> NEXT
+    LOOP -- Nao --> MODELS
+    MODELS --> RANK
+    BEST --> HOLDOUT
+    REPORT --> END
+```
+
 ## Fluxo do pipeline
 1. Carregamento dos dados
 2. Limpeza e pré-processamento
