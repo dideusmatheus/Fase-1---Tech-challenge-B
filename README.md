@@ -70,6 +70,31 @@ O dataset utilizado é o Breast Cancer Wisconsin Dataset. Os dados brutos devem 
     - `test.py`: avaliação final no conjunto de teste
   - `pipeline/`: fluxo de treinamento e validação (`training_pipeline.py`)
 
+## Documentação técnica
+
+- [Arquitetura do sistema](docs/arquitetura.md) — componentes, decisões arquiteturais e integrações
+- [Estratégia de testes](docs/testes.md) — metodologia de validação, métricas e reprodutibilidade
+
+## Decisões arquiteturais
+
+### Separação em três conjuntos (64% / 16% / 20%)
+A base é dividida em treino, validação e teste com `stratify=y` em ambas as etapas de split, preservando a proporção de classes (Maligno/Benigno) nos três conjuntos. O conjunto de **teste permanece completamente isolado** até a avaliação final — não é usado em nenhuma etapa de seleção de modelo.
+
+### StandardScaler: fit exclusivamente no treino
+O `StandardScaler` executa `fit_transform` apenas em `X_train`. Em `X_val` e `X_test` aplica-se somente `transform`, com os parâmetros aprendidos no treino. Aplicar `fit` em dados de avaliação constituiria **data leakage** — o modelo teria acesso implícito à distribuição estatística dos dados de teste durante o pré-processamento.
+
+### Critério primário: Recall da classe maligno
+O ranking de modelos prioriza Recall sobre Accuracy porque o custo de um **falso negativo** (tumor maligno classificado como benigno) é clinicamente muito mais grave do que um **falso positivo**. A Accuracy seria enganosa no dataset levemente desbalanceado (~63% benigno): um modelo que classifica tudo como benigno atingiria 63% de Accuracy sem detectar nenhum caso maligno.
+
+| Critério | Ordem | Justificativa |
+|---|---|---|
+| Recall maligno | 1º | Minimizar falsos negativos (risco de vida) |
+| Precision maligno | 2º | Desempate: reduzir biópsias desnecessárias |
+| F1 maligno | 3º | Desempate final: equilíbrio geral |
+
+### Rastreamento de falsos negativos apenas no conjunto de teste
+Os IDs originais dos pacientes são preservados somente para o conjunto de teste (`id_test.csv`). Os conjuntos de treino e validação são artefatos internos do processo de aprendizado — seus erros não representam predições sobre pacientes reais. Apenas o holdout set representa predições sobre casos nunca vistos, sendo o único para o qual identificar pacientes com diagnóstico incorreto tem sentido clínico.
+
 ## Diagrama de Fluxo
 
 ```mermaid
